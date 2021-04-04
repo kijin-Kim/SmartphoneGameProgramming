@@ -1,4 +1,4 @@
-# 2021 SmartGameProgramming Term Project
+# 2021 SmartPhoneGameProgramming Term Project
 
 # 개요
 안드로이드 용 2D 종스크롤 슈팅게임
