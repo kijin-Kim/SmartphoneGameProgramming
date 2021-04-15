@@ -1,12 +1,15 @@
-package kr.ac.kpu.game.s2016182006.termproject.ui.view;
+package ui.view;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Choreographer;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+
+import game.MainGame;
 
 public class GameView extends View {
     private static final String TAG = GameView.class.getSimpleName();
@@ -29,8 +32,8 @@ public class GameView extends View {
     }
 
     private void update() {
-        Log.d(TAG, "GameView Update Called");
-
+        MainGame game = MainGame.get();
+        game.update();
     }
 
 
@@ -45,5 +48,13 @@ public class GameView extends View {
             }
         });
     }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        MainGame game = MainGame.get();
+        game.draw(canvas);
+
+    }
+
 
 }

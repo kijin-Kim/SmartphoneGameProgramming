@@ -1,4 +1,4 @@
-package kr.ac.kpu.game.s2016182006.termproject.ui;
+package ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
