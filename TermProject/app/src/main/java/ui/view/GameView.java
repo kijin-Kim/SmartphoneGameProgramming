@@ -20,6 +20,7 @@ public class GameView extends View {
     public static GameView view;
 
     private long lastFrame;
+    
 
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

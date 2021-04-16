@@ -6,8 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.Debug;
-import android.util.Log;
 
 import framework.GameObject;
 import kr.ac.kpu.game.s2016182006.termproject.R;
@@ -27,16 +25,22 @@ public class Player implements GameObject {
     private float targetX;
     private float targetY;
 
+    private float lengthX;
+    private float lengthY;
+
     private Bitmap bitmap;
     private Rect srcRect;
     private RectF destRect;
+
+    private float lerpt;
 
     public Player(float x, float y) {
         this.positionX = x;
         this.positionY = y;
 
-        this.directionX = 0.0f;
-        this.directionY = 0.0f;
+        this.targetX = x;
+        this.lengthX = 0.0f;
+
 
         if (this.bitmap == null) {
             Resources resources = GameView.view.getResources();
@@ -52,25 +56,24 @@ public class Player implements GameObject {
 
     public void moveTo(float x, float y) {
         this.targetX = x;
-        this.targetY = y;
-
-        float lengthX = this.targetX - this.positionX;
-        float lengthY = this.targetY - this.positionY;
-
-        float magnitude = (float) (Math.sqrt(lengthX * lengthX + lengthY * lengthY));
-
-        this.directionX = lengthX / magnitude;
-        this.directionY = lengthY / magnitude;
+        this.lengthX = this.targetX - this.positionX;
+        this.lerpt = 0.0f;
 
     }
 
     public void update() {
         MainGame game = MainGame.get();
 
-        this.positionX += this.speed * this.directionX * game.frameTime;
-        this.positionY += this.speed * this.directionY * game.frameTime;
+        if (this.lengthX != 0.0f) {
+            this.lerpt += Math.abs(this.speed / this.lengthX) * game.frameTime;
+        }
 
-        
+        this.positionX = lerp(this.positionX, this.targetX, Math.min(this.lerpt, 1.0f));
+    }
+
+
+    float lerp(float a, float b, float t) {
+        return a + t * (b - a);
     }
 
     public void draw(Canvas canvas) {
