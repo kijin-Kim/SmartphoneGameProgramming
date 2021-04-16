@@ -5,11 +5,13 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Choreographer;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import game.MainGame;
+import game.Player;
 
 public class GameView extends View {
     private static final String TAG = GameView.class.getSimpleName();
@@ -17,6 +19,7 @@ public class GameView extends View {
 
     public static GameView view;
 
+    private long lastFrame;
 
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -26,34 +29,46 @@ public class GameView extends View {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        //super.onSizeChanged(w, h, oldw, oldh);
-        Log.d(TAG, "onSize: " + w + "," + h);
+        MainGame game = MainGame.get();
+        game.initialize();
         requestCallback();
     }
 
     private void update() {
         MainGame game = MainGame.get();
         game.update();
-    }
 
-
-    private void requestCallback() {
         invalidate();
-
-        Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {
-            @Override
-            public void doFrame(long time) {
-                update();
-                requestCallback();
-            }
-        });
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         MainGame game = MainGame.get();
         game.draw(canvas);
+    }
 
+
+    public boolean onTouchEvent(MotionEvent event) {
+        MainGame game = MainGame.get();
+        return game.onTouchEvent(event);
+    }
+
+    private void requestCallback() {
+
+        Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {
+            @Override
+            public void doFrame(long time) {
+                if (lastFrame == 0) {
+                    lastFrame = time;
+                }
+
+                MainGame game = MainGame.get();
+                game.frameTime = (time - lastFrame) / 1_000_00_000.0f;
+                update();
+                lastFrame = time;
+                requestCallback();
+            }
+        });
     }
 
 
