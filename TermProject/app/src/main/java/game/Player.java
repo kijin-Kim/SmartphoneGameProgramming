@@ -81,8 +81,9 @@ public class Player implements GameObject {
             return;
         }
 
-        float halfWidth = bitmap.getWidth() / 2.0f;
-        float halfHeight = bitmap.getHeight() / 2.0f;
+
+        float halfWidth = bitmap.getWidth() / 2.0f * GameView.view.MULTIPLIER;
+        float halfHeight = bitmap.getHeight() / 2.0f * GameView.view.MULTIPLIER;
         this.destRect.set(this.positionX - halfWidth, this.positionY - halfHeight, this.positionX + halfWidth, this.positionY + halfHeight);
 
         canvas.drawBitmap(bitmap, null, this.destRect, null);
