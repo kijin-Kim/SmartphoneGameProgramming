@@ -29,10 +29,11 @@ public class Player implements GameObject {
     private float lengthY;
 
     private Bitmap bitmap;
-    private Rect srcRect;
     private RectF destRect;
 
     private float lerpt;
+
+
 
     public Player(float x, float y) {
         this.positionX = x;
@@ -40,6 +41,8 @@ public class Player implements GameObject {
 
         this.targetX = x;
         this.lengthX = 0.0f;
+
+
 
 
         if (this.bitmap == null) {
@@ -59,6 +62,8 @@ public class Player implements GameObject {
         this.lengthX = this.targetX - this.positionX;
         this.lerpt = 0.0f;
 
+        MainGame game = MainGame.get();
+        game.add(new Bullet(this.positionX, this.positionY, 500.0f));
     }
 
     public void update() {
