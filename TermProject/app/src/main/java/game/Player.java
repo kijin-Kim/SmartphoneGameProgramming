@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.RectF;
 
 import framework.GameObject;
@@ -17,7 +16,8 @@ public class Player implements GameObject {
     private float positionX;
     private float positionY;
 
-    private float speed = 800.0f;
+    private final float speed;
+
 
     private float directionX;
     private float directionY;
@@ -29,21 +29,24 @@ public class Player implements GameObject {
     private float lengthY;
 
     private Bitmap bitmap;
-    private RectF destRect;
+    private final RectF destRect;
 
     private float lerpt;
 
-
+    private final float fireDelay;
+    private float fireElapsedTime;
 
     public Player(float x, float y) {
         this.positionX = x;
         this.positionY = y;
 
+
         this.targetX = x;
         this.lengthX = 0.0f;
 
 
-
+        this.fireDelay = 0.1f;
+        this.fireElapsedTime = 0.0f;
 
         if (this.bitmap == null) {
             Resources resources = GameView.view.getResources();
@@ -54,7 +57,9 @@ public class Player implements GameObject {
 
         this.destRect = new RectF();
 
-        this.speed = 10.0f;
+        this.speed = 100.0f;
+
+
     }
 
     public void moveTo(float x, float y) {
@@ -62,8 +67,23 @@ public class Player implements GameObject {
         this.lengthX = this.targetX - this.positionX;
         this.lerpt = 0.0f;
 
+
+    }
+
+    public void Fire() {
+
         MainGame game = MainGame.get();
-        game.add(new Bullet(this.positionX, this.positionY, 500.0f));
+        this.fireElapsedTime += game.frameTime;
+
+        if(this.fireDelay >= this.fireElapsedTime) {
+            return;
+        }
+
+        float fireSocketPositionX = this.positionX;
+        float fireSocketPositionY = this.positionY - bitmap.getHeight() / 2.0f * GameView.view.MULTIPLIER;
+
+        this.fireElapsedTime = 0.0f;
+        game.add(new Bullet(fireSocketPositionX, fireSocketPositionY, 800.0f));
     }
 
     public void update() {
@@ -74,6 +94,9 @@ public class Player implements GameObject {
         }
 
         this.positionX = lerp(this.positionX, this.targetX, Math.min(this.lerpt, 1.0f));
+
+        Fire();
+
     }
 
 
@@ -85,6 +108,7 @@ public class Player implements GameObject {
         if (bitmap == null) {
             return;
         }
+
 
 
         float halfWidth = bitmap.getWidth() / 2.0f * GameView.view.MULTIPLIER;

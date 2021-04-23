@@ -20,11 +20,13 @@ public class Bullet implements GameObject {
     private RectF destRect;
 
 
+
     public Bullet(float x, float y, float speed) {
         this.positionX = x;
         this.positionY = y;
-        this.speed = 50.0f;
+        this.speed = speed;
         this.destRect = new RectF();
+
         if (this.bitmap == null) {
             Resources resources = GameView.view.getResources();
             BitmapFactory.Options opts = new BitmapFactory.Options();
@@ -37,6 +39,10 @@ public class Bullet implements GameObject {
     public void update() {
         MainGame game = MainGame.get();
         this.positionY -= speed * game.frameTime;
+
+        if(this.positionY < 0) {
+            game.remove(this);
+        }
     }
 
     @Override

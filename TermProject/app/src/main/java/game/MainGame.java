@@ -60,6 +60,15 @@ public class MainGame {
         });
     }
 
+    public void remove(GameObject object) {
+        GameView.view.post(new Runnable() {
+            @Override
+            public void run() {
+                gameObjects.remove(object);
+            }
+        });
+    }
+
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
         if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
