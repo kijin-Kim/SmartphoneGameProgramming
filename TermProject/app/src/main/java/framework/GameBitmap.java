@@ -52,5 +52,11 @@ public class GameBitmap {
         return this.bitmap.getHeight();
     }
 
+    public void getBoundingRect(float positionX, float positionY, RectF rect) {
+        float halfWidth = this.bitmap.getWidth() / 2.0f * GameView.view.MULTIPLIER;
+        float halfHeight = this.bitmap.getHeight() / 2.0f * GameView.view.MULTIPLIER;
+        rect.set(positionX - halfWidth, positionY - halfHeight, positionX + halfWidth, positionY + halfHeight);
+    }
+
 
 }

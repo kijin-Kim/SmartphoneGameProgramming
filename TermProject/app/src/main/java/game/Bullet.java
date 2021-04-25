@@ -6,12 +6,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 
+import framework.BoxCollidable;
 import framework.GameBitmap;
 import framework.GameObject;
 import kr.ac.kpu.game.s2016182006.termproject.R;
 import ui.view.GameView;
 
-public class Bullet implements GameObject {
+public class Bullet implements GameObject, BoxCollidable {
 
     private GameBitmap gameBitmap;
     private float positionX;
@@ -44,5 +45,11 @@ public class Bullet implements GameObject {
     @Override
     public void draw(Canvas canvas) {
         this.gameBitmap.draw(canvas, this.positionX, this.positionY);
+    }
+
+
+    @Override
+    public void getBoundingRect(RectF rect) {
+        this.gameBitmap.getBoundingRect(this.positionX, this.positionY, rect);
     }
 }
