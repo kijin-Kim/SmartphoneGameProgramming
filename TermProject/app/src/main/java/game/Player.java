@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 
+import framework.GameBitmap;
 import framework.GameObject;
 import kr.ac.kpu.game.s2016182006.termproject.R;
 import ui.view.GameView;
@@ -28,8 +29,7 @@ public class Player implements GameObject {
     private float lengthX;
     private float lengthY;
 
-    private Bitmap bitmap;
-    private final RectF destRect;
+    private GameBitmap gameBitmap;
 
     private float lerpt;
 
@@ -48,14 +48,7 @@ public class Player implements GameObject {
         this.fireDelay = 0.1f;
         this.fireElapsedTime = 0.0f;
 
-        if (this.bitmap == null) {
-            Resources resources = GameView.view.getResources();
-            BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inScaled = false;
-            this.bitmap = BitmapFactory.decodeResource(resources, R.mipmap.playerblue_frame_01_png_processed, opts);
-        }
-
-        this.destRect = new RectF();
+        this.gameBitmap = new GameBitmap(R.mipmap.playerblue_frame_01_png_processed);
 
         this.speed = 100.0f;
 
@@ -75,12 +68,13 @@ public class Player implements GameObject {
         MainGame game = MainGame.get();
         this.fireElapsedTime += game.frameTime;
 
-        if(this.fireDelay >= this.fireElapsedTime) {
+        if (this.fireDelay >= this.fireElapsedTime) {
             return;
         }
 
+
         float fireSocketPositionX = this.positionX;
-        float fireSocketPositionY = this.positionY - bitmap.getHeight() / 2.0f * GameView.view.MULTIPLIER;
+        float fireSocketPositionY = this.positionY - this.gameBitmap.getHeight() / 2.0f * GameView.view.MULTIPLIER;
 
         this.fireElapsedTime = 0.0f;
         game.add(new Bullet(fireSocketPositionX, fireSocketPositionY, 800.0f));
@@ -105,16 +99,6 @@ public class Player implements GameObject {
     }
 
     public void draw(Canvas canvas) {
-        if (bitmap == null) {
-            return;
-        }
-
-
-
-        float halfWidth = bitmap.getWidth() / 2.0f * GameView.view.MULTIPLIER;
-        float halfHeight = bitmap.getHeight() / 2.0f * GameView.view.MULTIPLIER;
-        this.destRect.set(this.positionX - halfWidth, this.positionY - halfHeight, this.positionX + halfWidth, this.positionY + halfHeight);
-
-        canvas.drawBitmap(bitmap, null, this.destRect, null);
+        this.gameBitmap.draw(canvas, this.positionX, this.positionY);
     }
 }

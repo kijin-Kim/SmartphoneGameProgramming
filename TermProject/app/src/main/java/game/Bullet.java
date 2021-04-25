@@ -6,13 +6,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 
+import framework.GameBitmap;
 import framework.GameObject;
 import kr.ac.kpu.game.s2016182006.termproject.R;
 import ui.view.GameView;
 
 public class Bullet implements GameObject {
 
-    private Bitmap bitmap;
+    private GameBitmap gameBitmap;
     private float positionX;
     private float positionY;
     private float speed;
@@ -27,12 +28,7 @@ public class Bullet implements GameObject {
         this.speed = speed;
         this.destRect = new RectF();
 
-        if (this.bitmap == null) {
-            Resources resources = GameView.view.getResources();
-            BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inScaled = false;
-            this.bitmap = BitmapFactory.decodeResource(resources, R.mipmap.exhaust_frame_01_png_processed, opts);
-        }
+        this.gameBitmap = new GameBitmap(R.mipmap.exhaust_frame_01_png_processed);
     }
 
     @Override
@@ -47,9 +43,6 @@ public class Bullet implements GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        float halfWidth = bitmap.getWidth() / 2.0f * GameView.view.MULTIPLIER;
-        float halfHeight = bitmap.getHeight() / 2.0f * GameView.view.MULTIPLIER;
-        this.destRect.set(this.positionX - halfWidth, this.positionY - halfHeight, this.positionX + halfWidth, this.positionY + halfHeight);
-        canvas.drawBitmap(this.bitmap, null, destRect, null);
+        this.gameBitmap.draw(canvas, this.positionX, this.positionY);
     }
 }
