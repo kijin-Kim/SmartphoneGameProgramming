@@ -7,6 +7,9 @@ import android.view.MotionEvent;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import framework.GameObject;
 import ui.view.GameView;
@@ -18,7 +21,7 @@ public class MainGame {
     public float frameTime;
     private Player player;
 
-    ArrayList<GameObject> gameObjects;
+    private static HashMap<Class, ArrayList<GameObject>> gameObjects;
 
     public static MainGame get() {
         if (instance == null) {
@@ -32,24 +35,31 @@ public class MainGame {
         int height = GameView.view.getHeight();
         player = new Player(width / 2.0f, height - 300);
 
-        gameObjects = new ArrayList<>();
+        gameObjects = new HashMap<>();
 
-        gameObjects.add(new EnemyGenerator());
+        add(new EnemyGenerator());
     }
 
     public void update() {
         player.update();
 
-        for(GameObject object : gameObjects) {
-            object.update();
+
+        for(Map.Entry<Class, ArrayList<GameObject>> entries : gameObjects.entrySet()) {
+            for(GameObject gameObject : entries.getValue()) {
+                gameObject.update();
+            }
+
+            Log.d(TAG, ""+ entries.getValue().size());
         }
     }
 
     public void draw(Canvas canvas) {
         player.draw(canvas);
 
-        for(GameObject object : gameObjects) {
-            object.draw(canvas);
+        for(Map.Entry<Class, ArrayList<GameObject>> entries : gameObjects.entrySet()) {
+            for(GameObject gameObject : entries.getValue()) {
+                gameObject.draw(canvas);
+            }
         }
     }
 
@@ -57,7 +67,12 @@ public class MainGame {
         GameView.view.post(new Runnable() {
             @Override
             public void run() {
-                gameObjects.add(object);
+                ArrayList<GameObject> gameObjectArrayList = MainGame.gameObjects.get(object.getClass());
+                if(gameObjectArrayList == null) {
+                    gameObjectArrayList = new ArrayList<>();
+                    gameObjects.put(object.getClass(), gameObjectArrayList);
+                }
+                gameObjectArrayList.add(object);
             }
         });
     }
@@ -66,7 +81,7 @@ public class MainGame {
         GameView.view.post(new Runnable() {
             @Override
             public void run() {
-                gameObjects.remove(object);
+                gameObjects.get(object.getClass()).remove(object);
             }
         });
     }
