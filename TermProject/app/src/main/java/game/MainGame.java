@@ -33,6 +33,8 @@ public class MainGame {
         player = new Player(width / 2.0f, height - 300);
 
         gameObjects = new ArrayList<>();
+
+        gameObjects.add(new EnemyGenerator());
     }
 
     public void update() {
