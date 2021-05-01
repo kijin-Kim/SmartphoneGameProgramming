@@ -10,6 +10,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import java.io.InputStream;
+
 import game.MainGame;
 import game.Player;
 
@@ -40,7 +42,6 @@ public class GameView extends View {
     private void update() {
         MainGame game = MainGame.get();
         game.update();
-
         invalidate();
     }
 

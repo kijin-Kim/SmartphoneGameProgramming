@@ -1,6 +1,8 @@
 package game;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.media.DeniedByServerException;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -13,6 +15,7 @@ import java.util.Set;
 
 import framework.GameObject;
 import ui.view.GameView;
+import utils.CollisionHelper;
 
 public class MainGame {
     private static final String TAG = MainGame.class.getSimpleName();
@@ -31,6 +34,7 @@ public class MainGame {
     }
 
     public void initialize() {
+        Log.d(TAG, "initialize Called");
         int width = GameView.view.getWidth();
         int height = GameView.view.getHeight();
         player = new Player(width / 2.0f, height - 300);
@@ -44,20 +48,21 @@ public class MainGame {
         player.update();
 
 
-        for(Map.Entry<Class, ArrayList<GameObject>> entries : gameObjects.entrySet()) {
-            for(GameObject gameObject : entries.getValue()) {
+        for (Map.Entry<Class, ArrayList<GameObject>> entries : gameObjects.entrySet()) {
+            for (GameObject gameObject : entries.getValue()) {
                 gameObject.update();
             }
-
-            Log.d(TAG, ""+ entries.getValue().size());
         }
+
+        handleCollision();
+
     }
 
     public void draw(Canvas canvas) {
         player.draw(canvas);
 
-        for(Map.Entry<Class, ArrayList<GameObject>> entries : gameObjects.entrySet()) {
-            for(GameObject gameObject : entries.getValue()) {
+        for (Map.Entry<Class, ArrayList<GameObject>> entries : gameObjects.entrySet()) {
+            for (GameObject gameObject : entries.getValue()) {
                 gameObject.draw(canvas);
             }
         }
@@ -68,7 +73,7 @@ public class MainGame {
             @Override
             public void run() {
                 ArrayList<GameObject> gameObjectArrayList = MainGame.gameObjects.get(object.getClass());
-                if(gameObjectArrayList == null) {
+                if (gameObjectArrayList == null) {
                     gameObjectArrayList = new ArrayList<>();
                     gameObjects.put(object.getClass(), gameObjectArrayList);
                 }
@@ -97,4 +102,28 @@ public class MainGame {
     }
 
 
+    private void handleCollision() {
+
+        ArrayList<GameObject> enemies = gameObjects.get(Enemy.class);
+        ArrayList<GameObject> bullets = gameObjects.get(Bullet.class);
+
+        if (enemies != null && !enemies.isEmpty() && bullets != null && !bullets.isEmpty()) {
+
+            // Enemy vs Bullet
+            for (GameObject e : enemies) {
+                Enemy enemy = (Enemy) e;
+                for (GameObject b : bullets) {
+                    Bullet bullet = (Bullet) b;
+                    if (CollisionHelper.collides(enemy, bullet)) {
+                        remove(bullet);
+                        remove(enemy);
+                    }
+                }
+            }
+        }
+
+
+
+
+    }
 }
