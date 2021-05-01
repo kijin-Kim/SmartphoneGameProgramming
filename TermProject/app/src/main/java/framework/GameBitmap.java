@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 
@@ -36,7 +37,9 @@ public class GameBitmap {
     }
 
     private Bitmap bitmap;
+    private Rect srcRect; // can be null
     private final RectF destRect;
+
 
     public GameBitmap(int resId) {
         this.bitmap = getBitmap(resId);
@@ -62,12 +65,21 @@ public class GameBitmap {
         }
 
 
+        int left = 0;
+        int top = 0;
+        int right = 0;
+        int bottom = 0;
+
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
-            JSONArray subregions = jsonObject.getJSONArray("Subregions");
+            JSONObject subregion = jsonObject.getJSONObject(subregionName);
+            left = subregion.getInt("left");
+            top = subregion.getInt("top");
+            right = subregion.getInt("right");
+            bottom = subregion.getInt("bottom");
+            this.srcRect = new Rect();
+            this.srcRect.set(left, top, right, bottom);
 
-            JSONObject subregion = subregions.getJSONObject(0);
-            Log.d(TAG, subregion.getString("title"));
         } catch (JSONException exception) {
             exception.printStackTrace();
         }
@@ -79,25 +91,33 @@ public class GameBitmap {
 
     public void draw(Canvas canvas, float positionX, float positionY) {
 
-        float halfWidth = this.bitmap.getWidth() / 2.0f * GameView.view.MULTIPLIER;
-        float halfHeight = this.bitmap.getHeight() / 2.0f * GameView.view.MULTIPLIER;
+        float halfWidth = getWidth() / 2.0f * GameView.view.MULTIPLIER;
+        float halfHeight = getHeight() / 2.0f * GameView.view.MULTIPLIER;
         this.destRect.set(positionX - halfWidth, positionY - halfHeight, positionX + halfWidth, positionY + halfHeight);
 
-        canvas.drawBitmap(this.bitmap, null, this.destRect, null);
+        canvas.drawBitmap(this.bitmap, srcRect, this.destRect, null);
     }
 
 
     public int getWidth() {
-        return this.bitmap.getWidth();
+        if(this.srcRect == null) {
+            return this.bitmap.getWidth();
+        }
+
+        return this.srcRect.right - this.srcRect.left;
     }
 
     public int getHeight() {
-        return this.bitmap.getHeight();
+        if(this.srcRect == null) {
+            return this.bitmap.getHeight();
+        }
+
+        return this.srcRect.bottom - this.srcRect.top;
     }
 
     public void getBoundingRect(float positionX, float positionY, RectF rect) {
-        float halfWidth = this.bitmap.getWidth() / 2.0f * GameView.view.MULTIPLIER;
-        float halfHeight = this.bitmap.getHeight() / 2.0f * GameView.view.MULTIPLIER;
+        float halfWidth = getWidth() / 2.0f * GameView.view.MULTIPLIER;
+        float halfHeight = getHeight() / 2.0f * GameView.view.MULTIPLIER;
         rect.set(positionX - halfWidth, positionY - halfHeight, positionX + halfWidth, positionY + halfHeight);
     }
 

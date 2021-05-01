@@ -59,8 +59,6 @@ public class Player implements GameObject, BoxCollidable {
         this.targetX = x;
         this.lengthX = this.targetX - this.positionX;
         this.lerpt = 0.0f;
-
-        GameBitmap gameBitmap = new GameBitmap(R.mipmap.playerblue_frame_01_png_processed, "spritesheet_png_processed.json", "hello");
     }
 
     public void Fire() {
