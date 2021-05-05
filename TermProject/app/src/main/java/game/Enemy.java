@@ -39,4 +39,12 @@ public class Enemy implements GameObject, BoxCollidable {
     public void getBoundingRect(RectF rect) {
         this.gameBitmap.getBoundingRect(this.positionX, this.positionY, rect);
     }
+
+    public void setPositionX(float positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(float positionY) {
+        this.positionY = positionY;
+    }
 }

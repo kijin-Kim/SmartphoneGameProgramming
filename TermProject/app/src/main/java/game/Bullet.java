@@ -22,10 +22,10 @@ public class Bullet implements GameObject, BoxCollidable {
     private RectF destRect;
 
 
-    public Bullet(float x, float y, float speed) {
-        this.positionX = x;
-        this.positionY = y;
-        this.speed = speed;
+    public Bullet() {
+        this.positionX = 0;
+        this.positionY = 0;
+        this.speed = 0;
         this.destRect = new RectF();
 
         //this.gameBitmap = new GameBitmap(R.mipmap.exhaust_frame_01_png_processed);
@@ -53,5 +53,17 @@ public class Bullet implements GameObject, BoxCollidable {
     @Override
     public void getBoundingRect(RectF rect) {
         this.gameBitmap.getBoundingRect(this.positionX, this.positionY, rect);
+    }
+
+    public void setPositionX(float positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(float positionY) {
+        this.positionY = positionY;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 }

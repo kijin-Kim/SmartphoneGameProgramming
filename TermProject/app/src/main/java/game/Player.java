@@ -37,12 +37,12 @@ public class Player implements GameObject, BoxCollidable {
     private final float fireDelay;
     private float fireElapsedTime;
 
-    public Player(float x, float y) {
-        this.positionX = x;
-        this.positionY = y;
+    public Player() {
+        this.positionX = 0;
+        this.positionY = 0;
 
 
-        this.targetX = x;
+        this.targetX = 0;
         this.lengthX = 0.0f;
 
 
@@ -77,8 +77,18 @@ public class Player implements GameObject, BoxCollidable {
         float rightFireSocketPositionY = this.positionY;
 
         this.fireElapsedTime = 0.0f;
-        game.add(new Bullet(leftFireSocketPositionX, leftFireSocketPositionY, 800.0f));
-        game.add(new Bullet(rightFireSocketPositionX, rightFireSocketPositionY, 800.0f));
+
+
+        Bullet leftBullet = game.spawn(Bullet.class);
+        leftBullet.setPositionX(leftFireSocketPositionX);
+        leftBullet.setPositionY(leftFireSocketPositionY);
+        leftBullet.setSpeed(800.0f);
+
+        Bullet rightBullet = game.spawn(Bullet.class);
+        rightBullet.setPositionX(rightFireSocketPositionX);
+        rightBullet.setPositionY(rightFireSocketPositionY);
+        rightBullet.setSpeed(800.0f);
+
     }
 
     public void update() {
@@ -105,5 +115,13 @@ public class Player implements GameObject, BoxCollidable {
     @Override
     public void getBoundingRect(RectF rect) {
         this.gameBitmap.getBoundingRect(this.positionX, this.positionY, rect);
+    }
+
+    public void setPositionX(float positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(float positionY) {
+        this.positionY = positionY;
     }
 }

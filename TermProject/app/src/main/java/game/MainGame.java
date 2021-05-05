@@ -25,6 +25,8 @@ public class MainGame {
     private Player player;
 
     private static HashMap<Class, ArrayList<GameObject>> gameObjects;
+    private static HashMap<Class, ArrayList<GameObject>> recycleObjects;
+
 
     public static MainGame get() {
         if (instance == null) {
@@ -37,11 +39,17 @@ public class MainGame {
         Log.d(TAG, "initialize Called");
         int width = GameView.view.getWidth();
         int height = GameView.view.getHeight();
-        player = new Player(width / 2.0f, height - 300);
 
         gameObjects = new HashMap<>();
+        recycleObjects = new HashMap<>();
 
-        add(new EnemyGenerator());
+        player = spawn(Player.class);
+        player.setPositionX(width / 2.0f);
+        player.setPositionY(height - 300);
+
+
+
+        spawn(EnemyGenerator.class);
     }
 
     public void update() {
@@ -68,7 +76,30 @@ public class MainGame {
         }
     }
 
-    public void add(GameObject object) {
+    public <T extends GameObject> T spawn(Class objectClass) {
+        T newInstance = null;
+        ArrayList<GameObject> recycleObjectArrayList = recycleObjects.get(objectClass);
+        if(recycleObjectArrayList == null || recycleObjectArrayList.isEmpty()) {
+            try {
+                newInstance = (T) objectClass.newInstance();
+                add(newInstance);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.d(TAG, "Object Recycled");
+            newInstance = (T)recycleObjectArrayList.remove(0);
+            add(newInstance);
+        }
+
+
+
+
+        return newInstance;
+    }
+
+
+    private void add(GameObject object) {
         GameView.view.post(new Runnable() {
             @Override
             public void run() {
@@ -86,7 +117,17 @@ public class MainGame {
         GameView.view.post(new Runnable() {
             @Override
             public void run() {
-                gameObjects.get(object.getClass()).remove(object);
+                boolean removed = gameObjects.get(object.getClass()).remove(object);
+                if(removed) {
+                    ArrayList<GameObject> recyleObjectList = recycleObjects.get(object.getClass());
+                    if (recyleObjectList == null) {
+                        recyleObjectList = new ArrayList<>();
+                        recycleObjects.put(object.getClass(), recyleObjectList);
+                    }
+                    recyleObjectList.add(object);
+                }
+
+
             }
         });
     }
@@ -121,8 +162,6 @@ public class MainGame {
                 }
             }
         }
-
-
 
 
     }

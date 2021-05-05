@@ -30,7 +30,10 @@ public class EnemyGenerator implements GameObject {
         }
 
         spawnElapsedTime = 0.0f;
-        game.add(new Enemy());
+
+        Enemy newEnemy = game.spawn(Enemy.class);
+        newEnemy.setPositionY(0);
+
     }
 
     @Override
