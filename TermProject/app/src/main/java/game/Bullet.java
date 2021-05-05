@@ -30,7 +30,7 @@ public class Bullet implements GameObject, BoxCollidable {
 
         //this.gameBitmap = new GameBitmap(R.mipmap.exhaust_frame_01_png_processed);
         this.gameBitmap = new GameBitmap(R.mipmap.spritesheet_png_processed,
-                "spritesheet_png_processed.json", "proton_small_png_processed");
+                "spritesheet.json", "minigun_small");
 
     }
 

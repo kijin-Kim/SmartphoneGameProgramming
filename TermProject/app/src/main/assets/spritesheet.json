@@ -1,0 +1,15 @@
+{
+  "minigun_small": {
+    "left": 83,
+    "top": 0,
+    "right": 90,
+    "bottom": 16
+  },
+
+  "playerblue_frame_01" : {
+    "left": 113,
+    "top": 338,
+    "right": 170,
+    "bottom": 398
+  }
+}

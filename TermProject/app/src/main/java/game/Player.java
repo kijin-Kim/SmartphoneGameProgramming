@@ -49,7 +49,8 @@ public class Player implements GameObject, BoxCollidable {
         this.fireDelay = 0.1f;
         this.fireElapsedTime = 0.0f;
 
-        this.gameBitmap = new GameBitmap(R.mipmap.playerblue_frame_01_png_processed);
+        this.gameBitmap = new GameBitmap(R.mipmap.spritesheet_png_processed,
+                "spritesheet.json", "playerblue_frame_01");
         this.speed = 100.0f;
 
 
@@ -69,11 +70,15 @@ public class Player implements GameObject, BoxCollidable {
             return;
         }
 
-        float fireSocketPositionX = this.positionX;
-        float fireSocketPositionY = this.positionY - this.gameBitmap.getHeight() / 2.0f * GameView.view.MULTIPLIER;
+        float leftFireSocketPositionX = this.positionX - 16.0f * GameView.view.MULTIPLIER;
+        float leftFireSocketPositionY = this.positionY;
+
+        float rightFireSocketPositionX = this.positionX + 16.0f * GameView.view.MULTIPLIER;
+        float rightFireSocketPositionY = this.positionY;
 
         this.fireElapsedTime = 0.0f;
-        game.add(new Bullet(fireSocketPositionX, fireSocketPositionY, 800.0f));
+        game.add(new Bullet(leftFireSocketPositionX, leftFireSocketPositionY, 800.0f));
+        game.add(new Bullet(rightFireSocketPositionX, rightFireSocketPositionY, 800.0f));
     }
 
     public void update() {
