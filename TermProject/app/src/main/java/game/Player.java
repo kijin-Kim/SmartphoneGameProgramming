@@ -109,7 +109,7 @@ public class Player implements GameObject, BoxCollidable {
     }
 
     public void draw(Canvas canvas) {
-        this.gameBitmap.draw(canvas, this.positionX, this.positionY);
+        BitmapRenderer.get().DrawBitmap(canvas, this.gameBitmap, this.positionX, this.positionY, 2);
     }
 
     @Override

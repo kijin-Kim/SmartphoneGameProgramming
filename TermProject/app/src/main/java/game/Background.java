@@ -22,6 +22,6 @@ public class Background implements GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        this.backgroundBitmap.draw(canvas, GameView.view.getWidth() / 2.0f, GameView.view.getHeight() / 2.0f );
+        BitmapRenderer.get().DrawBitmap(canvas, this.backgroundBitmap, GameView.view.getWidth() / 2.0f, GameView.view.getHeight() / 2.0f, 0);
     }
 }

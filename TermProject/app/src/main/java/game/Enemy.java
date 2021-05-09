@@ -32,7 +32,7 @@ public class Enemy implements GameObject, BoxCollidable {
 
     @Override
     public void draw(Canvas canvas) {
-        this.gameBitmap.draw(canvas, this.positionX, this.positionY);
+        BitmapRenderer.get().DrawBitmap(canvas,this.gameBitmap, this.positionX, this.positionY, 2);
     }
 
     @Override

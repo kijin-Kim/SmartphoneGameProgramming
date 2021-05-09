@@ -68,12 +68,13 @@ public class MainGame {
 
     public void draw(Canvas canvas) {
         player.draw(canvas);
-
         for (Map.Entry<Class, ArrayList<GameObject>> entries : gameObjects.entrySet()) {
             for (GameObject gameObject : entries.getValue()) {
                 gameObject.draw(canvas);
             }
         }
+
+        BitmapRenderer.get().Execute();
     }
 
     public <T extends GameObject> T spawn(Class objectClass) {
