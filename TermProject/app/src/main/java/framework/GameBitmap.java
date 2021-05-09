@@ -172,4 +172,7 @@ public class GameBitmap {
     }
 
 
+    public Bitmap getRaw() {
+        return bitmap;
+    }
 }

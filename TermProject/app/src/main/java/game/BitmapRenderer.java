@@ -1,15 +1,13 @@
 package game;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
-
-import androidx.arch.core.util.Function;
+import android.graphics.Rect;
+import android.graphics.RectF;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.function.Consumer;
 
 import framework.GameBitmap;
-import ui.view.GameView;
 
 public class BitmapRenderer {
 
@@ -33,8 +31,17 @@ public class BitmapRenderer {
 
     }
 
+    void record(Runnable runnable, int drawOrder) {
+        runnables.get(drawOrder).add(runnable);
+    }
+
+    void DrawBitmap(Canvas canvas, GameBitmap bitmap, Rect srcRect, RectF destRect, int drawOrder) {
+        Bitmap rawBitmap = bitmap.getRaw();
+        record(() -> canvas.drawBitmap(rawBitmap, srcRect, destRect, null), drawOrder);
+    }
+
     void DrawBitmap(Canvas canvas, GameBitmap bitmap,  float positionX, float positionY, int drawOrder) {
-        runnables.get(drawOrder).add(() -> bitmap.draw(canvas, positionX, positionY));
+        record(() -> bitmap.draw(canvas, positionX, positionY), drawOrder);
     }
 
     void Execute() {
