@@ -2,8 +2,11 @@ package game;
 
 import android.graphics.Canvas;
 
+import androidx.arch.core.util.Function;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 import framework.GameBitmap;
 import ui.view.GameView;
