@@ -12,7 +12,7 @@ public class Background implements GameObject {
     private final GameBitmap backgroundBitmap;
 
     public Background() {
-        this.backgroundBitmap = new GameBitmap(R.mipmap.background);
+        this.backgroundBitmap = new GameBitmap(R.mipmap.background, 4.5f);
     }
 
     @Override

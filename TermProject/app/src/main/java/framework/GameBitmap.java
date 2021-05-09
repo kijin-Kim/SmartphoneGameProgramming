@@ -141,8 +141,8 @@ public class GameBitmap {
 
     public void draw(Canvas canvas, float positionX, float positionY) {
 
-        float halfWidth = getWidth() / 2.0f * GameView.view.MULTIPLIER;
-        float halfHeight = getHeight() / 2.0f * GameView.view.MULTIPLIER;
+        float halfWidth = getWidth() / 2.0f * this.multiplier;
+        float halfHeight = getHeight() / 2.0f * this.multiplier;
         this.destRect.set(positionX - halfWidth, positionY - halfHeight, positionX + halfWidth, positionY + halfHeight);
 
         canvas.drawBitmap(this.bitmap, srcRect, this.destRect, null);
