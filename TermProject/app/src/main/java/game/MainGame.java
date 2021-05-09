@@ -48,7 +48,7 @@ public class MainGame {
         player.setPositionY(height - 300);
 
 
-
+        spawn(Background.class);
         spawn(EnemyGenerator.class);
     }
 
