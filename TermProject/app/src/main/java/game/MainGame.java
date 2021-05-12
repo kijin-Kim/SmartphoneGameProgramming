@@ -1,17 +1,12 @@
 package game;
 
 import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.media.DeniedByServerException;
 import android.util.Log;
 import android.view.MotionEvent;
-
-import androidx.constraintlayout.widget.ConstraintSet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import framework.GameObject;
 import ui.view.GameView;
@@ -165,5 +160,9 @@ public class MainGame {
         }
 
 
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

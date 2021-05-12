@@ -175,4 +175,8 @@ public class GameBitmap {
     public Bitmap getRaw() {
         return bitmap;
     }
+
+    public float getMultiplier() {
+        return multiplier;
+    }
 }

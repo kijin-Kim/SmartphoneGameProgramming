@@ -15,24 +15,38 @@ public class Enemy implements GameObject, BoxCollidable {
     private float positionX;
     private float positionY;
 
-    private float speed;
+    private float speedX;
+    private float speedY;
 
     public Enemy() {
         this.gameBitmap = new GameBitmap(R.mipmap.playerblue_frame_01_png_processed);
         this.positionX = GameView.view.getWidth() / 2.0f;
 
-        this.speed = 800.0f;
+        this.speedX = 400.0f;
+        this.speedY = 100.0f;
     }
 
     @Override
     public void update() {
         MainGame game = MainGame.get();
-        this.positionY += speed * game.frameTime;
+
+        // Bounce off screen
+        if (this.positionX + this.gameBitmap.getWidth() * this.gameBitmap.getMultiplier() / 2.0f >= GameView.view.getWidth()
+                || this.positionX - this.gameBitmap.getWidth() * this.gameBitmap.getMultiplier() / 2.0f <= 0) {
+            this.speedX = -this.speedX;
+        }
+
+        this.positionX += speedX * game.frameTime;
+        this.positionY += speedY * game.frameTime;
+
+        if (this.positionX >= GameView.view.getHeight()) {
+            game.remove(this);
+        }
     }
 
     @Override
     public void draw(Canvas canvas) {
-        BitmapRenderer.get().DrawBitmap(canvas,this.gameBitmap, this.positionX, this.positionY, 2);
+        BitmapRenderer.get().DrawBitmap(canvas, this.gameBitmap, this.positionX, this.positionY, 2);
     }
 
     @Override

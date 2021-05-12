@@ -1,12 +1,8 @@
 package game;
 
 import android.graphics.Canvas;
-import android.graphics.RectF;
 
-import framework.BoxCollidable;
-import framework.GameBitmap;
 import framework.GameObject;
-import kr.ac.kpu.game.s2016182006.termproject.R;
 
 public class EnemyGenerator implements GameObject {
 

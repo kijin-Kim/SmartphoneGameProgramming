@@ -21,14 +21,10 @@ public class Player implements GameObject, BoxCollidable {
     private final float speed;
 
 
-    private float directionX;
-    private float directionY;
 
     private float targetX;
-    private float targetY;
 
     private float lengthX;
-    private float lengthY;
 
     private GameBitmap gameBitmap;
 
@@ -51,7 +47,7 @@ public class Player implements GameObject, BoxCollidable {
 
         this.gameBitmap = new GameBitmap(R.mipmap.spritesheet_png_processed,
                 "spritesheet.json", "playerblue_frame_01");
-        this.speed = 100.0f;
+        this.speed = 10.0f;
 
 
     }
@@ -100,7 +96,7 @@ public class Player implements GameObject, BoxCollidable {
 
         this.positionX = lerp(this.positionX, this.targetX, Math.min(this.lerpt, 1.0f));
 
-        Fire();
+        //Fire();
     }
 
 
@@ -123,5 +119,9 @@ public class Player implements GameObject, BoxCollidable {
 
     public void setPositionY(float positionY) {
         this.positionY = positionY;
+    }
+
+    public float getSpeed() {
+        return this.speed;
     }
 }

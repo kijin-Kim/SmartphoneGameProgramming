@@ -20,42 +20,49 @@ public class Background implements GameObject {
     private float deltaY;
 
 
+
     public Background() {
         this.backgroundBitmap = new GameBitmap(R.mipmap.background, 4.5f);
         this.srcRect = new Rect();
         this.srcRect.set(0, 0, this.backgroundBitmap.getWidth(), this.backgroundBitmap.getHeight());
 
         this.destRect = new RectF();
-        destRect.set(0,0, GameView.view.getWidth(), this.backgroundBitmap.getHeight() * 4.5f);
+        destRect.set(0,0, GameView.view.getWidth(), this.backgroundBitmap.getHeight() * this.backgroundBitmap.getMultiplier());
 
         this.destRect2 = new RectF();
-        destRect2.set(0, -this.backgroundBitmap.getHeight() * 4.5f, GameView.view.getWidth(), 0);
+        destRect2.set(0, -this.backgroundBitmap.getHeight() * this.backgroundBitmap.getMultiplier(), GameView.view.getWidth(), 0);
 
     }
 
     @Override
     public void update() {
+        Player player = MainGame.get().getPlayer();
+        if(player == null) {
+            return;
+        }
 
+        float playerSpeed = player.getSpeed();
+
+        destRect.top += playerSpeed;
+        destRect.bottom += playerSpeed;
+
+        destRect2.top += playerSpeed;
+        destRect2.bottom += playerSpeed;
+
+        if(destRect.top > GameView.view.getHeight()) {
+            destRect.top = -this.backgroundBitmap.getHeight() * this.backgroundBitmap.getMultiplier();
+            destRect.bottom = 0;
+        }
+
+        if(destRect2.top > GameView.view.getHeight()) {
+            destRect2.top = -this.backgroundBitmap.getHeight() * this.backgroundBitmap.getMultiplier();
+            destRect2.bottom = 0;
+        }
     }
 
     @Override
     public void draw(Canvas canvas) {
 
-        destRect.top += 10.0f;
-        destRect.bottom += 10.0f;
-
-        destRect2.top += 10.0f;
-        destRect2.bottom += 10.0f;
-
-        if(destRect.top > GameView.view.getHeight()) {
-            destRect.top = -this.backgroundBitmap.getHeight() * 4.5f;
-            destRect.bottom = 0;
-        }
-
-        if(destRect2.top > GameView.view.getHeight()) {
-            destRect2.top = -this.backgroundBitmap.getHeight() * 4.5f;
-            destRect2.bottom = 0;
-        }
 
 
         BitmapRenderer.get().DrawBitmap(canvas, this.backgroundBitmap, srcRect, destRect, 0);
