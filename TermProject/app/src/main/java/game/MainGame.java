@@ -153,7 +153,7 @@ public class MainGame {
                     Bullet bullet = (Bullet) b;
                     if (CollisionHelper.collides(enemy, bullet)) {
                         remove(bullet);
-                        remove(enemy);
+                        enemy.onHit();
                     }
                 }
             }

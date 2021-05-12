@@ -11,24 +11,26 @@ import ui.view.GameView;
 
 public class Enemy implements GameObject, BoxCollidable {
 
-    private GameBitmap gameBitmap;
-    private float positionX;
-    private float positionY;
+    protected GameBitmap gameBitmap;
+    protected float positionX;
+    protected float positionY;
 
-    private float speedX;
-    private float speedY;
+    protected float speedX;
+    protected float speedY;
+    protected int health;
+    protected Runnable runnable;
 
     public Enemy() {
-        this.gameBitmap = new GameBitmap(R.mipmap.playerblue_frame_01_png_processed);
-        this.positionX = GameView.view.getWidth() / 2.0f;
-
-        this.speedX = 400.0f;
-        this.speedY = 100.0f;
+        this.health = 1;
     }
 
     @Override
     public void update() {
         MainGame game = MainGame.get();
+
+        if(this.gameBitmap == null) {
+            return;
+        }
 
         // Bounce off screen
         if (this.positionX + this.gameBitmap.getWidth() * this.gameBitmap.getMultiplier() / 2.0f >= GameView.view.getWidth()
@@ -46,12 +48,25 @@ public class Enemy implements GameObject, BoxCollidable {
 
     @Override
     public void draw(Canvas canvas) {
-        BitmapRenderer.get().DrawBitmap(canvas, this.gameBitmap, this.positionX, this.positionY, 2);
+        if(this.gameBitmap != null) {
+            BitmapRenderer.get().DrawBitmap(canvas, this.gameBitmap, this.positionX, this.positionY, 2);
+        }
     }
 
     @Override
     public void getBoundingRect(RectF rect) {
-        this.gameBitmap.getBoundingRect(this.positionX, this.positionY, rect);
+        if(this.gameBitmap != null) {
+            this.gameBitmap.getBoundingRect(this.positionX, this.positionY, rect);
+        }
+    }
+
+    public void onHit() {
+        if(this.health <=0) {
+            MainGame.get().remove(this);
+        }
+        if(this.runnable != null) {
+            this.runnable.run();
+        }
     }
 
     public void setPositionX(float positionX) {
@@ -60,5 +75,21 @@ public class Enemy implements GameObject, BoxCollidable {
 
     public void setPositionY(float positionY) {
         this.positionY = positionY;
+    }
+
+    public void setGameBitmap(GameBitmap gameBitmap) {
+        this.gameBitmap = gameBitmap;
+    }
+
+    public void setSpeedX(float speedX) {
+        this.speedX = speedX;
+    }
+
+    public void setSpeedY(float speedY) {
+        this.speedY = speedY;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 }

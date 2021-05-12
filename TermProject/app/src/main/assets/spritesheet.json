@@ -11,5 +11,29 @@
     "top": 338,
     "right": 170,
     "bottom": 398
+  },
+
+  "enemy01_green" : {
+    "left": 410,
+    "top": 111,
+    "right": 473,
+    "bottom": 163
+  },
+
+  "enemy01_teal" : {
+    "left": 197,
+    "top": 166,
+    "right": 260,
+    "bottom": 218
+  },
+
+  "enemy01_red" : {
+    "left": 2,
+    "top": 166,
+    "right": 65,
+    "bottom": 218
   }
+
+
+
 }
