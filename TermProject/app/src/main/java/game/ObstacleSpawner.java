@@ -35,11 +35,11 @@ public class ObstacleSpawner implements GameObject {
 
         spawnElapsedTime = 0.0f;
 
-//        spawnSlowEnemy(EnemyColor.Green);
-//        spawnFastEnemy(EnemyColor.Red);
+        spawnSlowEnemy(EnemyColor.Green);
+        spawnFastEnemy(EnemyColor.Red);
 
-        PowerItem item = game.spawn(PowerItem.class);
-        item.setPositionY(0);
+//        PowerItem item = game.spawn(PowerItem.class);
+//        item.setPositionY(0);
 
 
     }

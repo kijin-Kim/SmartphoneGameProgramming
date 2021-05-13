@@ -42,9 +42,9 @@ public class MainGame {
         player.setPositionX(width / 2.0f);
         player.setPositionY(height - 300);
 
-
         spawn(Background.class);
         spawn(ObstacleSpawner.class);
+
     }
 
     public void update() {
@@ -206,6 +206,28 @@ public class MainGame {
                 if (CollisionHelper.collides(player, powerItem)) {
                     powerItem.onHit(player);
                     player.onHit(powerItem);
+                }
+            }
+        }
+
+
+
+        if (slowEnemies != null && !slowEnemies.isEmpty()) {
+            for (GameObject enemy : slowEnemies) {
+                SlowEnemy slowEnemy = (SlowEnemy) enemy;
+                if (CollisionHelper.collides(player, slowEnemy)) {
+                    slowEnemy.onHit(player);
+                    player.onHit(slowEnemy);
+                }
+            }
+        }
+
+        if (fastEnemies != null && !fastEnemies.isEmpty()) {
+            for (GameObject enemy : fastEnemies) {
+                FastEnemy fastEnemy = (FastEnemy) enemy;
+                if (CollisionHelper.collides(player, fastEnemy)) {
+                    fastEnemy.onHit(player);
+                    player.onHit(fastEnemy);
                 }
             }
         }

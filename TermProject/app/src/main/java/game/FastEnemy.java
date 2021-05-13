@@ -17,7 +17,9 @@ public class FastEnemy extends ConstantMovingObject {
             this.health -= 1;
         }
 
-        if(this.health <=0) {
+
+
+        if(this.health <=0 || object.getClass() == Player.class) {
             MainGame.get().remove(this);
         }
     }

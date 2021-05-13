@@ -23,8 +23,10 @@ public class Player implements GameObject, BoxCollidable {
 
 
     private float targetX;
+    private float targetY;
 
     private float lengthX;
+    private float lengthY;
 
     private GameBitmap gameBitmap;
 
@@ -38,8 +40,10 @@ public class Player implements GameObject, BoxCollidable {
     private GameBitmap smallBullet;
     private GameBitmap bigBullet;
 
+    private final Score score;
 
     public Player() {
+
         this.positionX = 0;
         this.positionY = 0;
 
@@ -57,7 +61,9 @@ public class Player implements GameObject, BoxCollidable {
         this.bulletSpeed = 500.0f;
 
         this.targetX = 0;
+        this.targetY = 0;
         this.lengthX = 0.0f;
+        this.lengthY = 0.0f;
 
 
         this.fireDelay = 0.5f;
@@ -67,12 +73,19 @@ public class Player implements GameObject, BoxCollidable {
                 "spritesheet.json", "playerblue_frame_01");
         this.speed = 10.0f;
 
+
         this.health = 15;
+
+        MainGame game = MainGame.get();
+        this.score = game.spawn(Score.class);
+        this.score.setScore(health);
     }
 
     public void moveTo(float x, float y) {
         this.targetX = x;
-        this.lengthX = this.targetX - this.positionX;
+        this.targetY = y;
+        this.lengthX = Math.abs(this.targetX - this.positionX);
+        this.lengthY = Math.abs(this.targetY - this.positionY);
         this.lerpt = 0.0f;
     }
 
@@ -110,13 +123,15 @@ public class Player implements GameObject, BoxCollidable {
     public void update() {
         MainGame game = MainGame.get();
 
-        if (this.lengthX != 0.0f) {
-            this.lerpt += Math.abs(this.speed / this.lengthX) * game.frameTime;
+        if (this.lengthX != 0.0f || this.lengthY != 0.0f) {
+            this.lerpt += Math.abs(this.speed / (this.lengthX + this.lengthY)) * game.frameTime;
         }
 
         this.positionX = lerp(this.positionX, this.targetX, Math.min(this.lerpt, 1.0f));
+        this.positionY = lerp(this.positionY, this.targetY, Math.min(this.lerpt, 1.0f));
 
-        Fire();
+//        Fire();
+
     }
 
 
@@ -139,9 +154,7 @@ public class Player implements GameObject, BoxCollidable {
 
         if (object.getClass() != HealthItem.class && object.getClass() != PowerItem.class) {
             this.health -= 1;
-            return;
         }
-
 
         if(object.getClass() == HealthItem.class) {
             this.health +=1;
@@ -152,8 +165,12 @@ public class Player implements GameObject, BoxCollidable {
             this.bulletBitmap = this.bigBullet;
         }
 
+        this.score.setScore(this.health);
+
+
         if (this.health <= 0) {
             game.remove(this);
+            return;
         }
 
     }
