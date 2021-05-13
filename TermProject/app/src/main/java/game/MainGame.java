@@ -44,7 +44,7 @@ public class MainGame {
 
 
         spawn(Background.class);
-        spawn(EnemyGenerator.class);
+        spawn(ObstacleSpawner.class);
     }
 
     public void update() {
@@ -75,7 +75,7 @@ public class MainGame {
     public <T extends GameObject> T spawn(Class objectClass) {
         T newInstance = null;
         ArrayList<GameObject> recycleObjectArrayList = recycleObjects.get(objectClass);
-        if(recycleObjectArrayList == null || recycleObjectArrayList.isEmpty()) {
+        if (recycleObjectArrayList == null || recycleObjectArrayList.isEmpty()) {
             try {
                 newInstance = (T) objectClass.newInstance();
                 add(newInstance);
@@ -84,11 +84,9 @@ public class MainGame {
             }
         } else {
             Log.d(TAG, "Object Recycled");
-            newInstance = (T)recycleObjectArrayList.remove(0);
+            newInstance = (T) recycleObjectArrayList.remove(0);
             add(newInstance);
         }
-
-
 
 
         return newInstance;
@@ -114,7 +112,7 @@ public class MainGame {
             @Override
             public void run() {
                 boolean removed = gameObjects.get(object.getClass()).remove(object);
-                if(removed) {
+                if (removed) {
                     ArrayList<GameObject> recyleObjectList = recycleObjects.get(object.getClass());
                     if (recyleObjectList == null) {
                         recyleObjectList = new ArrayList<>();
@@ -141,24 +139,76 @@ public class MainGame {
 
     private void handleCollision() {
 
-        ArrayList<GameObject> enemies = gameObjects.get(Enemy.class);
+        ArrayList<GameObject> slowEnemies = gameObjects.get(SlowEnemy.class);
         ArrayList<GameObject> bullets = gameObjects.get(Bullet.class);
 
-        if (enemies != null && !enemies.isEmpty() && bullets != null && !bullets.isEmpty()) {
-
-            // Enemy vs Bullet
-            for (GameObject e : enemies) {
-                Enemy enemy = (Enemy) e;
+        if (slowEnemies != null && !slowEnemies.isEmpty() && bullets != null && !bullets.isEmpty()) {
+            for (GameObject e : slowEnemies) {
+                SlowEnemy enemy = (SlowEnemy) e;
                 for (GameObject b : bullets) {
                     Bullet bullet = (Bullet) b;
                     if (CollisionHelper.collides(enemy, bullet)) {
-                        remove(bullet);
-                        enemy.onHit();
+                        bullet.onHit(enemy);
+                        enemy.onHit(bullet);
                     }
                 }
             }
         }
 
+        ArrayList<GameObject> fastEnemies = gameObjects.get(FastEnemy.class);
+
+        if (fastEnemies != null && !fastEnemies.isEmpty() && bullets != null && !bullets.isEmpty()) {
+            for (GameObject e : fastEnemies) {
+                FastEnemy enemy = (FastEnemy) e;
+                for (GameObject b : bullets) {
+                    Bullet bullet = (Bullet) b;
+                    if (CollisionHelper.collides(enemy, bullet)) {
+                        bullet.onHit(enemy);
+                        enemy.onHit(bullet);
+                    }
+                }
+            }
+        }
+
+        ArrayList<GameObject> asteroids = gameObjects.get(Asteroid.class);
+
+        if (asteroids != null && !asteroids.isEmpty() && bullets != null && !bullets.isEmpty()) {
+            for (GameObject e : asteroids) {
+                Asteroid asteroid = (Asteroid) e;
+                for (GameObject b : bullets) {
+                    Bullet bullet = (Bullet) b;
+                    if (CollisionHelper.collides(asteroid, bullet)) {
+                        bullet.onHit(asteroid);
+                        asteroid.onHit(bullet);
+                    }
+                }
+            }
+        }
+
+
+        ArrayList<GameObject> healthItems = gameObjects.get(HealthItem.class);
+
+        if (healthItems != null && !healthItems.isEmpty()) {
+                for (GameObject item : healthItems) {
+                    HealthItem healthItem = (HealthItem) item;
+                    if (CollisionHelper.collides(player, healthItem)) {
+                        healthItem.onHit(player);
+                        player.onHit(healthItem);
+                    }
+                }
+            }
+
+        ArrayList<GameObject> powerItems = gameObjects.get(PowerItem.class);
+
+        if (powerItems != null && !powerItems.isEmpty()) {
+            for (GameObject item : powerItems) {
+                PowerItem powerItem = (PowerItem) item;
+                if (CollisionHelper.collides(player, powerItem)) {
+                    powerItem.onHit(player);
+                    player.onHit(powerItem);
+                }
+            }
+        }
 
     }
 

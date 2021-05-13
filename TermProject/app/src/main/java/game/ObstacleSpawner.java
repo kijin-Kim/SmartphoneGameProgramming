@@ -7,7 +7,7 @@ import framework.GameObject;
 import kr.ac.kpu.game.s2016182006.termproject.R;
 import ui.view.GameView;
 
-public class EnemyGenerator implements GameObject {
+public class ObstacleSpawner implements GameObject {
 
     private static final float spawnDelay = 2.0f;
     private static float spawnElapsedTime = 0.0f;
@@ -17,7 +17,7 @@ public class EnemyGenerator implements GameObject {
     }
 
 
-    public EnemyGenerator() {
+    public ObstacleSpawner() {
     }
 
     @Override
@@ -35,8 +35,12 @@ public class EnemyGenerator implements GameObject {
 
         spawnElapsedTime = 0.0f;
 
-        spawnSlowEnemy(EnemyColor.Green);
-        spawnFastEnemy(EnemyColor.Red);
+//        spawnSlowEnemy(EnemyColor.Green);
+//        spawnFastEnemy(EnemyColor.Red);
+
+        PowerItem item = game.spawn(PowerItem.class);
+        item.setPositionY(0);
+
 
     }
 
@@ -44,41 +48,43 @@ public class EnemyGenerator implements GameObject {
     public void draw(Canvas canvas) {
     }
 
+    public void spawnAsteroid() {
+        MainGame game = MainGame.get();
+        Asteroid asteroid = game.spawn(Asteroid.class);
+        asteroid.setPositionY(0);
+    }
+
     public void spawnSlowEnemy(EnemyColor color) {
 
         MainGame game = MainGame.get();
-        Enemy newEnemy = game.spawn(Enemy.class);
+        SlowEnemy newEnemy = game.spawn(SlowEnemy.class);
         newEnemy.setPositionX(GameView.view.getWidth() / 2.0f);
         newEnemy.setPositionY(0);
-        newEnemy.setSpeedX(100.0f);
-        newEnemy.setSpeedY(50.0f);
+
 
         switch (color) {
             case Green:
                 newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
                         "spritesheet.json", "enemy01_green"));
-                newEnemy.setHealth(3);
+                newEnemy.setHealth(8);
                 break;
             case Teal:
                 newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
                         "spritesheet.json", "enemy01_teal"));
-                newEnemy.setHealth(5);
+                newEnemy.setHealth(14);
                 break;
             case Red:
                 newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
                         "spritesheet.json", "enemy01_red"));
-                newEnemy.setHealth(7);
+                newEnemy.setHealth(20);
                 break;
         }
     }
 
     public void spawnFastEnemy(EnemyColor color) {
         MainGame game = MainGame.get();
-        Enemy newEnemy = game.spawn(Enemy.class);
-        newEnemy.setPositionX(GameView.view.getWidth() / 2.0f);
+        FastEnemy newEnemy = game.spawn(FastEnemy.class);
         newEnemy.setPositionY(0);
-        newEnemy.setSpeedX(0.0f);
-        newEnemy.setHealth(1);
 
         switch (color) {
             case Green:

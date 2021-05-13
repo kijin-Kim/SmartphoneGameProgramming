@@ -6,10 +6,9 @@ import android.graphics.RectF;
 import framework.BoxCollidable;
 import framework.GameBitmap;
 import framework.GameObject;
-import kr.ac.kpu.game.s2016182006.termproject.R;
 import ui.view.GameView;
 
-public class Enemy implements GameObject, BoxCollidable {
+public class ConstantMovingObject implements GameObject, BoxCollidable {
 
     protected GameBitmap gameBitmap;
     protected float positionX;
@@ -18,9 +17,8 @@ public class Enemy implements GameObject, BoxCollidable {
     protected float speedX;
     protected float speedY;
     protected int health;
-    protected Runnable runnable;
 
-    public Enemy() {
+    public ConstantMovingObject() {
         this.health = 1;
     }
 
@@ -60,13 +58,7 @@ public class Enemy implements GameObject, BoxCollidable {
         }
     }
 
-    public void onHit() {
-        if(this.health <=0) {
-            MainGame.get().remove(this);
-        }
-        if(this.runnable != null) {
-            this.runnable.run();
-        }
+    public void onHit(GameObject object) {
     }
 
     public void setPositionX(float positionX) {
@@ -91,5 +83,25 @@ public class Enemy implements GameObject, BoxCollidable {
 
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public float getPositionX() {
+        return positionX;
+    }
+
+    public float getPositionY() {
+        return positionY;
+    }
+
+    public float getSpeedX() {
+        return speedX;
+    }
+
+    public float getSpeedY() {
+        return speedY;
+    }
+
+    public int getHealth() {
+        return health;
     }
 }

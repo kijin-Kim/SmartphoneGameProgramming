@@ -32,8 +32,27 @@
     "top": 166,
     "right": 65,
     "bottom": 218
+  },
+
+  "health_item" : {
+    "left": 318,
+    "top": 28,
+    "right": 365,
+    "bottom": 57
+  },
+
+  "power_item" : {
+    "left": 220,
+    "top": 28,
+    "right": 267,
+    "bottom": 57
+  },
+
+  "minigun_big" : {
+    "left": 144,
+    "top": 0,
+    "right": 154,
+    "bottom": 20
   }
-
-
 
 }

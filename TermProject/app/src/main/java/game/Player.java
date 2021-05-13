@@ -14,12 +14,12 @@ import ui.view.GameView;
 
 public class Player implements GameObject, BoxCollidable {
     private static final String TAG = Player.class.getSimpleName();
+    private int health;
 
     private float positionX;
     private float positionY;
 
     private final float speed;
-
 
 
     private float targetX;
@@ -32,24 +32,42 @@ public class Player implements GameObject, BoxCollidable {
 
     private final float fireDelay;
     private float fireElapsedTime;
+    private float bulletSpeed;
+
+    private GameBitmap bulletBitmap;
+    private GameBitmap smallBullet;
+    private GameBitmap bigBullet;
+
 
     public Player() {
         this.positionX = 0;
         this.positionY = 0;
 
 
+
+        this.smallBullet =new GameBitmap(R.mipmap.spritesheet_png_processed,
+                "spritesheet.json", "minigun_small");
+        this.bigBullet = new GameBitmap(R.mipmap.spritesheet_png_processed,
+                "spritesheet.json", "minigun_big");
+
+
+        this.bulletBitmap = this.smallBullet;
+
+
+        this.bulletSpeed = 500.0f;
+
         this.targetX = 0;
         this.lengthX = 0.0f;
 
 
-        this.fireDelay = 0.1f;
+        this.fireDelay = 0.5f;
         this.fireElapsedTime = 0.0f;
 
         this.gameBitmap = new GameBitmap(R.mipmap.spritesheet_png_processed,
                 "spritesheet.json", "playerblue_frame_01");
         this.speed = 10.0f;
 
-
+        this.health = 15;
     }
 
     public void moveTo(float x, float y) {
@@ -78,12 +96,14 @@ public class Player implements GameObject, BoxCollidable {
         Bullet leftBullet = game.spawn(Bullet.class);
         leftBullet.setPositionX(leftFireSocketPositionX);
         leftBullet.setPositionY(leftFireSocketPositionY);
-        leftBullet.setSpeed(800.0f);
+        leftBullet.setSpeed(this.bulletSpeed);
+        leftBullet.setGameBitmap(this.bulletBitmap);
 
         Bullet rightBullet = game.spawn(Bullet.class);
         rightBullet.setPositionX(rightFireSocketPositionX);
         rightBullet.setPositionY(rightFireSocketPositionY);
-        rightBullet.setSpeed(800.0f);
+        rightBullet.setSpeed(this.bulletSpeed);
+        rightBullet.setGameBitmap(this.bulletBitmap);
 
     }
 
@@ -96,7 +116,7 @@ public class Player implements GameObject, BoxCollidable {
 
         this.positionX = lerp(this.positionX, this.targetX, Math.min(this.lerpt, 1.0f));
 
-        //Fire();
+        Fire();
     }
 
 
@@ -111,6 +131,31 @@ public class Player implements GameObject, BoxCollidable {
     @Override
     public void getBoundingRect(RectF rect) {
         this.gameBitmap.getBoundingRect(this.positionX, this.positionY, rect);
+    }
+
+    @Override
+    public void onHit(GameObject object) {
+        MainGame game = MainGame.get();
+
+        if (object.getClass() != HealthItem.class && object.getClass() != PowerItem.class) {
+            this.health -= 1;
+            return;
+        }
+
+
+        if(object.getClass() == HealthItem.class) {
+            this.health +=1;
+        }
+
+        if(object.getClass() == PowerItem.class && this.bulletSpeed < 800.0f) {
+            this.bulletSpeed = 800.0f;
+            this.bulletBitmap = this.bigBullet;
+        }
+
+        if (this.health <= 0) {
+            game.remove(this);
+        }
+
     }
 
     public void setPositionX(float positionX) {
