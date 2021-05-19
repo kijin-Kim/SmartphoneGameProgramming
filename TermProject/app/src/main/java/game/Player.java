@@ -5,10 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.nfc.cardemulation.OffHostApduService;
 
 import framework.BoxCollidable;
 import framework.GameBitmap;
 import framework.GameObject;
+import framework.Sound;
 import kr.ac.kpu.game.s2016182006.termproject.R;
 import ui.view.GameView;
 
@@ -87,6 +89,7 @@ public class Player implements GameObject, BoxCollidable {
         this.lengthX = Math.abs(this.targetX - this.positionX);
         this.lengthY = Math.abs(this.targetY - this.positionY);
         this.lerpt = 0.0f;
+
     }
 
     public void Fire() {
@@ -97,6 +100,7 @@ public class Player implements GameObject, BoxCollidable {
             return;
         }
 
+        Sound.play(R.raw.fire);
         float leftFireSocketPositionX = this.positionX - 16.0f * GameView.view.MULTIPLIER;
         float leftFireSocketPositionY = this.positionY;
 
@@ -130,7 +134,7 @@ public class Player implements GameObject, BoxCollidable {
         this.positionX = lerp(this.positionX, this.targetX, Math.min(this.lerpt, 1.0f));
         this.positionY = lerp(this.positionY, this.targetY, Math.min(this.lerpt, 1.0f));
 
-//        Fire();
+        Fire();
 
     }
 

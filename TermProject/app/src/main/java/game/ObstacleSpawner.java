@@ -1,6 +1,11 @@
 package game;
 
 import android.graphics.Canvas;
+import android.graphics.RadialGradient;
+import android.widget.ArrayAdapter;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 import framework.GameBitmap;
 import framework.GameObject;
@@ -11,6 +16,8 @@ public class ObstacleSpawner implements GameObject {
 
     private static final float spawnDelay = 2.0f;
     private static float spawnElapsedTime = 0.0f;
+    private static ArrayList<EnemyColor> colors;
+    private static Random random = new Random();
 
     enum EnemyColor {
         Green, Teal, Red
@@ -18,6 +25,10 @@ public class ObstacleSpawner implements GameObject {
 
 
     public ObstacleSpawner() {
+        colors = new ArrayList<>();
+        colors.add(EnemyColor.Green);
+        colors.add(EnemyColor.Teal);
+        colors.add(EnemyColor.Red);
     }
 
     @Override
@@ -35,11 +46,21 @@ public class ObstacleSpawner implements GameObject {
 
         spawnElapsedTime = 0.0f;
 
-        spawnSlowEnemy(EnemyColor.Green);
-        spawnFastEnemy(EnemyColor.Red);
 
-//        PowerItem item = game.spawn(PowerItem.class);
-//        item.setPositionY(0);
+        EnemyColor slowColor = colors.get(random.nextInt(3));
+        EnemyColor fastColor = colors.get(random.nextInt(3));
+
+
+
+        spawnSlowEnemy(slowColor);
+        spawnFastEnemy(fastColor);
+        spawnAsteroid();
+
+        PowerItem powerItem = game.spawn(PowerItem.class);
+        powerItem.setPositionY(0);
+
+        HealthItem healthItem = game.spawn(HealthItem.class);
+        healthItem.setPositionY(0);
 
 
     }

@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import framework.BoxCollidable;
 import framework.GameBitmap;
 import framework.GameObject;
+import framework.Sound;
 import kr.ac.kpu.game.s2016182006.termproject.R;
 import ui.view.GameView;
 
@@ -56,7 +57,6 @@ public class Bullet implements GameObject, BoxCollidable {
     @Override
     public void onHit(GameObject object) {
         MainGame.get().remove(this);
-
     }
 
     public void setPositionX(float positionX) {

@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import java.io.InputStream;
 
+import framework.Sound;
 import game.MainGame;
 import game.Player;
 
@@ -29,6 +30,7 @@ public class GameView extends View {
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         GameView.view = this;
+        Sound.init(context);
         running = true;
     }
 

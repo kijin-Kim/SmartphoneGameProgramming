@@ -16,8 +16,11 @@ public class PowerItem extends ConstantMovingObject {
                 "spritesheet.json", "power_item");
 
         setPositionX(GameView.view.getWidth() / 2.0f);
-        setSpeedX(100.0f);
-        setSpeedY(800.0f);
+
+
+
+        setSpeedX(random.nextInt(100) + 100.0f);
+        setSpeedY(random.nextInt(300) + 400.0f);
     }
 
     @Override
