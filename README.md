@@ -60,3 +60,4 @@
 
 # GameObject overview
 ![gameobjects](image/gameObjects.png)
+![gameobjects2](image/gameObjects2.png)
