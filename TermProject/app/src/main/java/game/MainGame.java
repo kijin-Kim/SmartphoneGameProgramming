@@ -185,6 +185,16 @@ public class MainGame {
             }
         }
 
+        if (asteroids != null && !asteroids.isEmpty()) {
+            for (GameObject enemy : asteroids) {
+                Asteroid asteroid = (Asteroid) enemy;
+                if (CollisionHelper.collides(player, asteroid)) {
+                    asteroid.onHit(player);
+                    player.onHit(asteroid);
+                }
+            }
+        }
+
 
         ArrayList<GameObject> healthItems = gameObjects.get(HealthItem.class);
 
