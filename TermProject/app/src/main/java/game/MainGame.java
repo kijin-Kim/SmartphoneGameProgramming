@@ -14,6 +14,7 @@ import java.util.Stack;
 import framework.GameLayer;
 import framework.GameObject;
 import framework.Layer;
+import framework.TitleLayer;
 import ui.view.GameView;
 import utils.CollisionHelper;
 
@@ -38,8 +39,7 @@ public class MainGame {
     }
 
     public void initialize() {
-        layers.push(new GameLayer());
-        layers.peek().start();
+        pushLayer(new TitleLayer());
     }
 
     public void update() {
@@ -65,5 +65,14 @@ public class MainGame {
 
     public Player getPlayer() {
         return layers.peek().getPlayer();
+    }
+
+    public void pushLayer(Layer layer) {
+        if(!layers.empty()) {
+            layers.peek().end();
+        }
+
+        layers.push(layer);
+        layers.peek().start();
     }
 }
