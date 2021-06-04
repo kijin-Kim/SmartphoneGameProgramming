@@ -17,6 +17,7 @@ import game.Background;
 import game.BitmapRenderer;
 import game.Bullet;
 import game.FastEnemy;
+import game.GamePlayer;
 import game.HealthItem;
 import game.MainGame;
 import game.ObstacleSpawner;
@@ -30,7 +31,7 @@ public class GameLayer extends Layer {
 
     @Override
     public void start() {
-        player = spawn(Player.class);
+        player = spawn(GamePlayer.class);
 
         int width = GameView.view.getWidth();
         int height = GameView.view.getHeight();
@@ -65,16 +66,7 @@ public class GameLayer extends Layer {
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        int action = event.getAction();
-        if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
-            this.player.moveTo(event.getX(), event.getY());
-            return true;
-        }
 
-        return false;
-    }
 
 
     private void handleCollision() {

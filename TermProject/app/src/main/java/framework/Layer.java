@@ -40,7 +40,7 @@ public class Layer {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        return false;
+        return this.player.onTouchEvent(event);
     }
 
     public void remove(GameObject object) {
