@@ -21,8 +21,7 @@ public class Layer {
     protected HashMap<Class, ArrayList<GameObject>> recycleObjects;
 
     public Layer() {
-        gameObjects = new HashMap<>();
-        recycleObjects = new HashMap<>();
+
     }
 
 
@@ -44,9 +43,13 @@ public class Layer {
     }
 
     public void remove(GameObject object) {
+
+
         GameView.view.post(new Runnable() {
             @Override
             public void run() {
+                if(object == null)
+                    return;
                 boolean removed = gameObjects.get(object.getClass()).remove(object);
                 if (removed) {
                     ArrayList<GameObject> recyleObjectList = recycleObjects.get(object.getClass());
@@ -99,9 +102,12 @@ public class Layer {
     }
 
     public void start() {
+        gameObjects = new HashMap<>();
+        recycleObjects = new HashMap<>();
     }
 
     public void end() {
+
     }
 }
 

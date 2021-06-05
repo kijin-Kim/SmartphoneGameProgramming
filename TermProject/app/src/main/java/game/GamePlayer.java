@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import framework.BoxCollidable;
 import framework.GameBitmap;
 import framework.GameObject;
+import framework.GameOverLayer;
 import framework.Sound;
 import kr.ac.kpu.game.s2016182006.termproject.R;
 import ui.view.GameView;
@@ -66,7 +67,7 @@ public class GamePlayer extends Player {
         this.speed = 10.0f;
 
 
-        this.health = 15;
+        this.health = 1;
 
         MainGame game = MainGame.get();
         this.score = game.spawn(Score.class);
@@ -164,7 +165,8 @@ public class GamePlayer extends Player {
 
         if (this.health <= 0) {
             game.remove(this);
-            return;
+            game.popLayer();
+            game.pushLayer(new GameOverLayer());
         }
 
     }

@@ -75,4 +75,9 @@ public class MainGame {
         layers.push(layer);
         layers.peek().start();
     }
+
+    public void popLayer() {
+        Layer popped = layers.pop();
+        popped.end();
+    }
 }

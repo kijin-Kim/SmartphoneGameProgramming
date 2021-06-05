@@ -31,6 +31,8 @@ public class GameLayer extends Layer {
 
     @Override
     public void start() {
+        super.start();
+
         player = spawn(GamePlayer.class);
 
         int width = GameView.view.getWidth();
