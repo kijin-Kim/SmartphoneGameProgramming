@@ -15,10 +15,7 @@ public class GamePlayer extends Player {
     private static final String TAG = GamePlayer.class.getSimpleName();
     private int health;
 
-    private float positionX;
-    private float positionY;
 
-    private final float speed;
 
 
     private float targetX;
@@ -42,10 +39,6 @@ public class GamePlayer extends Player {
     private final Score score;
 
     public GamePlayer() {
-
-        this.positionX = 0;
-        this.positionY = 0;
-
 
 
         this.smallBullet =new GameBitmap(R.mipmap.spritesheet_png_processed,
@@ -187,15 +180,4 @@ public class GamePlayer extends Player {
 
     }
 
-    public void setPositionX(float positionX) {
-        this.positionX = positionX;
-    }
-
-    public void setPositionY(float positionY) {
-        this.positionY = positionY;
-    }
-
-    public float getSpeed() {
-        return this.speed;
-    }
 }

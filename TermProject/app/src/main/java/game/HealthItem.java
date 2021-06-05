@@ -24,7 +24,7 @@ public class HealthItem extends ConstantMovingObject {
     @Override
     public void onHit(GameObject object) {
         MainGame game = MainGame.get();
-        if(object.getClass() == Player.class) {
+        if(object.getClass() == GamePlayer.class) {
             game.remove(this);
         }
     }

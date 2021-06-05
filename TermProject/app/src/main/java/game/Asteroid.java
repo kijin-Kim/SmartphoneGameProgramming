@@ -55,7 +55,7 @@ public class Asteroid extends ConstantMovingObject {
                 childAsteroid2.setSpeedX(-this.speedX);
                 childAsteroid2.canDivide = false;
             }
-        } else if(object.getClass() == Player.class) {
+        } else if(object.getClass() == GamePlayer.class) {
             this.canDivide = true;
             game.remove(this);
         }

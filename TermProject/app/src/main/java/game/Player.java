@@ -18,9 +18,9 @@ import ui.view.GameView;
 public class Player implements GameObject, BoxCollidable {
     private static final String TAG = Player.class.getSimpleName();
 
-    private float positionX;
-    private float positionY;
-    private float speed;
+    protected float positionX;
+    protected float positionY;
+    protected float speed;
 
 
     public Player() {
