@@ -13,15 +13,21 @@ import kr.ac.kpu.game.s2016182006.termproject.R;
 import ui.view.GameView;
 
 public class Score implements GameObject {
-    private final GameBitmap gameBitmap;
+    public final GameBitmap gameBitmap;
 
     private final ArrayList<RectF> destRects;
     private final ArrayList<Rect> srcRects;
+
+    private float positionX;
+    private float positionY;
 
 
     private int score;
 
     public Score() {
+
+        this.positionX = 0;
+        this.positionY = 0;
 
         gameBitmap = new GameBitmap(R.mipmap.number_24x32);
 
@@ -32,10 +38,10 @@ public class Score implements GameObject {
             this.srcRects.add(new Rect(0 + i * 24, 0, 24 + i * 24, 32));
         }
         for (int i = 0; i < 10; i++) {
-            this.destRects.add(new RectF(24 * this.gameBitmap.getMultiplier() * i,
-                    0,
-                    24 * this.gameBitmap.getMultiplier() + 24 * this.gameBitmap.getMultiplier() * i,
-                    32 * this.gameBitmap.getMultiplier()));
+            this.destRects.add(new RectF(this.positionX + 24 * this.gameBitmap.getMultiplier() * i,
+                    this.positionY,
+                    this.positionX + 24 * this.gameBitmap.getMultiplier() + 24 * this.gameBitmap.getMultiplier() * i,
+                    this.positionY + 32 * this.gameBitmap.getMultiplier()));
         }
 
 
@@ -51,6 +57,14 @@ public class Score implements GameObject {
 
     @Override
     public void update() {
+
+        for (int i = 0; i < 10; i++) {
+            this.destRects.get(i).set(this.positionX + 24 * this.gameBitmap.getMultiplier() * i,
+                    this.positionY,
+                    this.positionX + 24 * this.gameBitmap.getMultiplier() + 24 * this.gameBitmap.getMultiplier() * i,
+                    this.positionY + 32 * this.gameBitmap.getMultiplier());
+        }
+
     }
 
     @Override
@@ -75,5 +89,11 @@ public class Score implements GameObject {
 
     }
 
+    public void setPositionX(float positionX) {
+        this.positionX = positionX;
+    }
 
+    public void setPositionY(float positionY) {
+        this.positionY = positionY;
+    }
 }

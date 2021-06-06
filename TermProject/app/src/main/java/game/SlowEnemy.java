@@ -17,6 +17,8 @@ public class SlowEnemy extends ConstantMovingObject {
 
         if(this.health <=0 || object.getClass() == GamePlayer.class) {
             MainGame.get().remove(this);
+            GamePlayer player = (GamePlayer)MainGame.get().getPlayer();
+            player.addScore();
         }
     }
 }

@@ -70,6 +70,7 @@ public class GameView extends View {
 
                 MainGame game = MainGame.get();
                 game.frameTime = (float) (time - lastFrame) / 1_000_000_000;
+                game.gameTime += game.frameTime;
                 update();
                 lastFrame = time;
                 requestCallback();

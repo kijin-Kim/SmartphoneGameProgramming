@@ -29,8 +29,13 @@ public class Asteroid extends ConstantMovingObject {
         }
 
         setPositionX(GameView.view.getWidth() / 2.0f);
-        setSpeedX(100.0f);
-        setSpeedY(800.0f);
+
+        int randomX = random.nextInt(100);
+        int randomY = random.nextInt(100);
+
+
+        setSpeedX(50.0f + randomX);
+        setSpeedY(400.0f + randomY);
     }
 
     @Override
@@ -58,6 +63,8 @@ public class Asteroid extends ConstantMovingObject {
         } else if(object.getClass() == GamePlayer.class) {
             this.canDivide = true;
             game.remove(this);
+            GamePlayer player = (GamePlayer)MainGame.get().getPlayer();
+            player.addScore();
         }
 
     }

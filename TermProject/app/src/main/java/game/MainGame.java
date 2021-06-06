@@ -23,7 +23,7 @@ public class MainGame {
     private static MainGame instance;
 
     public float frameTime;
-
+    public float gameTime;
 
     private static Stack<Layer> layers;
 

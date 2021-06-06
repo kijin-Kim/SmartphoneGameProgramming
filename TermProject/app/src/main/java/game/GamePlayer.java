@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 
-import framework.BoxCollidable;
 import framework.GameBitmap;
 import framework.GameObject;
 import framework.GameOverLayer;
@@ -15,7 +14,7 @@ import ui.view.GameView;
 public class GamePlayer extends Player {
     private static final String TAG = GamePlayer.class.getSimpleName();
     private int health;
-
+    private int scoreNum;
 
 
 
@@ -29,7 +28,7 @@ public class GamePlayer extends Player {
 
     private float lerpt;
 
-    private final float fireDelay;
+    private float fireDelay;
     private float fireElapsedTime;
     private float bulletSpeed;
 
@@ -37,6 +36,7 @@ public class GamePlayer extends Player {
     private GameBitmap smallBullet;
     private GameBitmap bigBullet;
 
+    private final Score hpUI;
     private final Score score;
 
     public GamePlayer() {
@@ -66,12 +66,17 @@ public class GamePlayer extends Player {
                 "spritesheet.json", "playerblue_frame_01");
         this.speed = 10.0f;
 
-
-        this.health = 1;
+        this.scoreNum = 0;
+        this.health = 10;
 
         MainGame game = MainGame.get();
+        this.hpUI = game.spawn(Score.class);
+        this.hpUI.setScore(health);
+
+
         this.score = game.spawn(Score.class);
-        this.score.setScore(health);
+        this.score.setScore(0);
+        this.score.setPositionY(GameView.view.getHeight() - (32 * this.score.gameBitmap.getMultiplier()));
     }
 
     public void moveTo(float x, float y) {
@@ -155,12 +160,14 @@ public class GamePlayer extends Player {
             this.health +=1;
         }
 
-        if(object.getClass() == PowerItem.class && this.bulletSpeed < 800.0f) {
-            this.bulletSpeed = 800.0f;
+        if(object.getClass() == PowerItem.class) {
+            this.bulletSpeed += 50.0f;
+            this.fireDelay *= 0.9f;
             this.bulletBitmap = this.bigBullet;
+
         }
 
-        this.score.setScore(this.health);
+        this.hpUI.setScore(this.health);
 
 
         if (this.health <= 0) {
@@ -180,6 +187,11 @@ public class GamePlayer extends Player {
         }
         return false;
 
+    }
+
+    void addScore() {
+        this.scoreNum += 1;
+        this.score.setScore(scoreNum);
     }
 
 }

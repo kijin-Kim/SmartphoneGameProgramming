@@ -53,6 +53,27 @@
     "top": 0,
     "right": 154,
     "bottom": 20
+  },
+
+  "fast_enemy_red" : {
+    "left" : 66,
+    "top" : 166,
+    "right" : 130,
+    "bottom" : 218
+  },
+
+  "fast_enemy_green" : {
+    "left" : 131,
+    "top" : 166,
+    "right" : 195,
+    "bottom" : 218
+  },
+
+  "fast_enemy_teal" : {
+    "left" : 323,
+    "top" : 166,
+    "right" : 385,
+    "bottom" : 218
   }
 
 }

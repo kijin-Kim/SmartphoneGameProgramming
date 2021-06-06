@@ -19,6 +19,7 @@ public class ObstacleSpawner implements GameObject {
     private static ArrayList<EnemyColor> colors;
     private static Random random = new Random();
 
+    private int bound = 3;
     enum EnemyColor {
         Green, Teal, Red
     }
@@ -40,27 +41,55 @@ public class ObstacleSpawner implements GameObject {
         MainGame game = MainGame.get();
         spawnElapsedTime += game.frameTime;
 
-        if (spawnDelay > spawnElapsedTime) {
-            return;
+        if (spawnDelay <= spawnElapsedTime) {
+            spawnElapsedTime = 0.0f;
+
+            EnemyColor slowColor = EnemyColor.Green;
+            EnemyColor fastColor = EnemyColor.Green;
+
+            if (game.gameTime > 20 && game.gameTime <= 40) {
+                slowColor = EnemyColor.Teal;
+                fastColor = EnemyColor.Teal;
+
+            } else if (game.gameTime > 60) {
+                slowColor = EnemyColor.Red;
+                fastColor = EnemyColor.Red;
+            }
+
+
+            int randNum = random.nextInt(12);
+
+            switch (randNum) {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    spawnFastEnemy(fastColor);
+                    break;
+                case 4:
+                case 5:
+                case 6:
+                    spawnSlowEnemy(slowColor);
+                case 7:
+                case 8:
+                    spawnAsteroid();
+                    break;
+                case 9:
+                    PowerItem powerItem = game.spawn(PowerItem.class);
+                    powerItem.setPositionY(0);
+                    break;
+                case 10:
+                    HealthItem healthItem = game.spawn(HealthItem.class);
+                    healthItem.setPositionY(0);
+                    break;
+                case 11:
+                    bound += 1;
+                    break;
+
+            }
+
+
         }
-
-        spawnElapsedTime = 0.0f;
-
-
-        EnemyColor slowColor = colors.get(random.nextInt(3));
-        EnemyColor fastColor = colors.get(random.nextInt(3));
-
-
-
-        spawnSlowEnemy(slowColor);
-        spawnFastEnemy(fastColor);
-        spawnAsteroid();
-
-        PowerItem powerItem = game.spawn(PowerItem.class);
-        powerItem.setPositionY(0);
-
-        HealthItem healthItem = game.spawn(HealthItem.class);
-        healthItem.setPositionY(0);
 
 
     }
@@ -70,60 +99,92 @@ public class ObstacleSpawner implements GameObject {
     }
 
     public void spawnAsteroid() {
+        int count = random.nextInt(bound);
+
+
+
         MainGame game = MainGame.get();
-        Asteroid asteroid = game.spawn(Asteroid.class);
-        asteroid.setPositionY(0);
+
+        for (int i = 0; i < count; i++) {
+            int x = random.nextInt(GameView.view.getWidth() - 100);
+            x += 100;
+            Asteroid asteroid = game.spawn(Asteroid.class);
+            asteroid.setPositionY(0);
+            asteroid.setPositionX(x);
+        }
+
     }
 
     public void spawnSlowEnemy(EnemyColor color) {
 
+        int count = random.nextInt(bound);
+
         MainGame game = MainGame.get();
-        SlowEnemy newEnemy = game.spawn(SlowEnemy.class);
-        newEnemy.setPositionX(GameView.view.getWidth() / 2.0f);
-        newEnemy.setPositionY(0);
 
+        for (int i = 0; i < count; i++) {
+            SlowEnemy newEnemy = game.spawn(SlowEnemy.class);
+            newEnemy.setPositionX(GameView.view.getWidth() / 2.0f);
+            newEnemy.setPositionY(0);
 
-        switch (color) {
-            case Green:
-                newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
-                        "spritesheet.json", "enemy01_green"));
-                newEnemy.setHealth(8);
-                break;
-            case Teal:
-                newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
-                        "spritesheet.json", "enemy01_teal"));
-                newEnemy.setHealth(14);
-                break;
-            case Red:
-                newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
-                        "spritesheet.json", "enemy01_red"));
-                newEnemy.setHealth(20);
-                break;
+            switch (color) {
+                case Green:
+                    newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
+                            "spritesheet.json", "enemy01_green"));
+                    newEnemy.setHealth(8);
+                    break;
+                case Teal:
+                    newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
+                            "spritesheet.json", "enemy01_teal"));
+                    newEnemy.setHealth(14);
+                    break;
+                case Red:
+                    newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
+                            "spritesheet.json", "enemy01_red"));
+                    newEnemy.setHealth(20);
+                    break;
+            }
+
+            int x = random.nextInt(GameView.view.getWidth() - 100);
+            x += 100;
+            newEnemy.setPositionX(x);
         }
+
+
     }
 
     public void spawnFastEnemy(EnemyColor color) {
-        MainGame game = MainGame.get();
-        FastEnemy newEnemy = game.spawn(FastEnemy.class);
-        newEnemy.setPositionY(0);
 
-        switch (color) {
-            case Green:
-                newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
-                        "spritesheet.json", "enemy01_green"));
-                newEnemy.setSpeedY(500f);
-                break;
-            case Teal:
-                newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
-                        "spritesheet.json", "enemy01_teal"));
-                newEnemy.setSpeedY(700.0f);
-                break;
-            case Red:
-                newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
-                        "spritesheet.json", "enemy01_red"));
-                newEnemy.setSpeedY(900.0f);
-                break;
+        int count = random.nextInt(bound);
+        MainGame game = MainGame.get();
+
+        for (int i = 0; i < count; i++) {
+            FastEnemy newEnemy = game.spawn(FastEnemy.class);
+            newEnemy.setPositionY(0);
+
+            switch (color) {
+                case Green:
+                    newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
+                            "spritesheet.json", "fast_enemy_green"));
+                    newEnemy.setSpeedY(500f);
+                    break;
+                case Teal:
+                    newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
+                            "spritesheet.json", "fast_enemy_teal"));
+                    newEnemy.setSpeedY(700.0f);
+                    break;
+                case Red:
+                    newEnemy.setGameBitmap(new GameBitmap(R.mipmap.spritesheet_png_processed,
+                            "spritesheet.json", "fast_enemy_red"));
+                    newEnemy.setSpeedY(900.0f);
+                    break;
+            }
+
+            int x = random.nextInt(GameView.view.getWidth() - 100);
+            x += 100;
+            newEnemy.setPositionX(x);
         }
+
+
     }
 
 
