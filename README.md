@@ -72,6 +72,8 @@
 - 보스 몬스터
 - 리소스를 구하는게 생각보다 힘듦
 
+## 해결되어야 하는 문제
+- 차별성 부족
 
 # Insights
 ![insights](image/insights.png)
